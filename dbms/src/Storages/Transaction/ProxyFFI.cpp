@@ -530,4 +530,24 @@ raft_serverpb::RegionLocalState TiFlashRaftProxyHelper::getRegionLocalState(uint
     return state;
 }
 
+BaseBuffView GetLockByKey(
+    const EngineStoreServerWrap * server,
+    uint64_t region_id,
+    BaseBuffView key)
+{
+    try
+    {
+        auto tikv_key = TiKVKey(key.data, key.len);
+        auto & kvstore = server->tmt->getKVStore();
+        auto region = kvstore->getRegion(region_id);
+        auto value = region->getLockByKey(tikv_key);
+        return BaseBuffView{value->data(), value->dataSize()};
+    }
+    catch (...)
+    {
+        tryLogCurrentException(__PRETTY_FUNCTION__);
+        exit(-1);
+    }
+}
+
 } // namespace DB

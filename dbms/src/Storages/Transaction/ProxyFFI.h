@@ -145,6 +145,7 @@ BaseBuffView strIntoView(const std::string * str_ptr);
 CppStrWithView GetConfig(EngineStoreServerWrap *, uint8_t full);
 void SetStore(EngineStoreServerWrap *, BaseBuffView);
 void SetPBMsByBytes(MsgPBType type, RawVoidPtr ptr, BaseBuffView view);
+BaseBuffView GetLockByKey(const EngineStoreServerWrap * server, uint64_t region_id, BaseBuffView key);
 }
 
 inline EngineStoreServerHelper GetEngineStoreServerHelper(
@@ -171,6 +172,7 @@ inline EngineStoreServerHelper GetEngineStoreServerHelper(
         .fn_get_config = GetConfig,
         .fn_set_store = SetStore,
         .fn_set_pb_msg_by_bytes = SetPBMsByBytes,
+        .fn_get_lock_by_key = GetLockByKey,
     };
 }
 } // namespace DB
